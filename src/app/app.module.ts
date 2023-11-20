@@ -17,6 +17,9 @@ import { CalendarModule } from "primeng/calendar";
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { DialogModule } from 'primeng/dialog';
+import { initializeApp,provideFirebaseApp } from '@angular/fire/app';
+import { environment } from '../environments/environment';
+import { provideFirestore,getFirestore } from '@angular/fire/firestore';
 
 @NgModule({
   declarations: [
@@ -38,7 +41,9 @@ import { DialogModule } from 'primeng/dialog';
     CommonModule,
     CalendarModule,
     ToastModule,
-    DialogModule
+    DialogModule,
+    provideFirebaseApp(() => initializeApp(environment.firebase)),
+    provideFirestore(() => getFirestore())
   ],
   providers: [MessageService],
   bootstrap: [AppComponent]

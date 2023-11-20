@@ -29,7 +29,7 @@
           </td>
           <td>
             <button pButton pRipple label="Delete" icon="pi pi-minus" class="p-button-success p-mr-2"
-              (click)="deletePayment(info.id)">
+              (click)="deletePayment(info.payerEmail)">
             </button>
           </td>
         </tr>
@@ -37,7 +37,6 @@
     </p-table>
   </ng-container>
 </div>
-
 <button pButton pRipple icon="pi pi-plus" class="p-button-success p-mr-2" style="padding-top: 10px"
           (click)="display=!display">Create New Payment</button>
 
