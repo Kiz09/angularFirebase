@@ -19,7 +19,7 @@ export class PaymentsService {
   }
 
   createNewPayment(payment: Partial<Payment>) {
-    payment.createdDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss')?.toString();
+    payment.createdDate = new Date().toString();
     const paymentRef = collection(this.firestore, 'payments');
     return addDoc(paymentRef, payment);
   }
@@ -30,6 +30,6 @@ export class PaymentsService {
 
   updatePayment(id: string) {
     const paymentRef = doc(this.firestore, `payments/${id}`);
-    return updateDoc(paymentRef, {"status": "Paid", "paidDate": this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss')});
+    return updateDoc(paymentRef, {"status": "Paid", "paidDate": new Date().toString()});
   }
 }
