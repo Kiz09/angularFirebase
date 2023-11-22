@@ -10,8 +10,7 @@ import { DatePipe } from '@angular/common';
 })
 export class PaymentsService {
 
-  constructor(private firestore: Firestore,
-    private datePipe: DatePipe) { }
+  constructor(private firestore: Firestore) { }
 
   getAll(): Observable<Payment[]> {
     const paymentRef = collection(this.firestore, 'payments');
