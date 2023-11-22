@@ -3,9 +3,9 @@ import { Payment } from "../../models/payment.model";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { MessageService } from 'primeng/api';
 import { PaymentsService } from 'src/app/services/payments.service';
-import { Observable } from 'rxjs';
+import { Observable } from 'rxjs/internal/Observable';
 import { CurrencyList } from 'src/app/models/types';
-
+import { DatePipe } from '@angular/common';
 
 
 @Component({
@@ -14,50 +14,38 @@ import { CurrencyList } from 'src/app/models/types';
 })
 export class PaymentsListComponent implements OnInit {
 
+
+  constructor(
+    private paymentService: PaymentsService,
+    private formBuilder: FormBuilder,
+    private datepipe: DatePipe,
+    private messageService: MessageService
+  ) { }
+
   paymentsList$?: Observable<Payment[]>;
   display = false;
 
   selectedCurrency: any = null;
   currencies = CurrencyList.concat();
 
-
   ngOnInit() {
     this.paymentsList$ = this.paymentService.getAll();
+    console.log("Observable");
+    console.log(this.paymentsList$);
   }
 
-  async deletePayment(payerEmail: string) {
-    const response = await this.paymentService.deletePayment(payerEmail);
+  async deletePayment(id: string) {
+    const response = await this.paymentService.deletePayment(id);
     console.log(response);
-
-    /*var numberValue = Number(id);
-    this.paymentService.deletePayment(numberValue).subscribe({
-      next: () => { this.getAll() },
-      error: (err: HttpResponse<HttpStatusCode>) => { this.messageService.add({ severity: 'error', summary: 'Error'}) }
-    })*/
   }
 
-  getAll() {
-    this.paymentsList$ = this.paymentService.getAll();
-  }
-
-
-  updatePayment(id: string, payment: Payment) {
-    /*var numberValue = Number(id);
-    this.paymentService.updatePayment(numberValue, payment).subscribe({
-      next: () => { this.getAll() },
-      error: (err: HttpResponse<HttpStatusCode>) => { this.messageService.add({ severity: 'error', summary: 'Error' }) }
-    })*/
+  async updatePayment(id: string) {
+    const response = await this.paymentService.updatePayment(id);
   }
 
   async createNewPayment(payment: Payment) {
-    console.log(this.form.value);
-    const response = await this.paymentService.createNewPayment(this.form.value);
+    const response = await this.paymentService.createNewPayment(payment);
     console.log(response);
-
-    /*this.paymentService.createNewPayment(payment).subscribe({
-      next: () => { this.getAll() },
-      error: (err: HttpResponse<HttpStatusCode>) => { this.messageService.add({ severity: 'error', summary: 'Error'}) }
-    })*/
   }
 
   public form: FormGroup = this.formBuilder.group({
@@ -66,11 +54,6 @@ export class PaymentsListComponent implements OnInit {
     amount: ['0', [Validators.required, Validators.min(0)]]
   });
 
-  constructor(
-    private paymentService: PaymentsService,
-    private formBuilder: FormBuilder,
-    private messageService: MessageService
-  ) { }
 
 
 }

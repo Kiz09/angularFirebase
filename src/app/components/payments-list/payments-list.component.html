@@ -4,7 +4,6 @@
     <p-table [value]="paymentsList">
       <ng-template pTemplate="header">
         <tr>
-          <th>ID</th>
           <th>Payer Email</th>
           <th>Created Date</th>
           <th>Amount</th>
@@ -15,7 +14,6 @@
       </ng-template>
       <ng-template pTemplate="body" let-info>
         <tr>
-          <td>{{info.id}}</td>
           <td>{{info.payerEmail}}</td>
           <td>{{info.createdDate | date:'dd-MM-YYYY'}}</td>
           <td>{{info.amount}}</td>
@@ -23,13 +21,13 @@
           <td>{{info.paidDate | date:'dd-MM-YYYY'}}</td>
           <td>{{info.status}}</td>
           <td>
-            <button pButton pRipple label="Pay" (click)="updatePayment(info.id, info)" *ngIf="info.paidDate == null"
+            <button pButton pRipple label="Pay" (click)="updatePayment(info.id)" *ngIf="info.paidDate == null"
               icon="pi pi-plus" class="p-button-success p-mr-2">
             </button>
           </td>
           <td>
             <button pButton pRipple label="Delete" icon="pi pi-minus" class="p-button-success p-mr-2"
-              (click)="deletePayment(info.payerEmail)">
+              (click)="deletePayment(info.id)">
             </button>
           </td>
         </tr>

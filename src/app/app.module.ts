@@ -12,7 +12,7 @@ import { DropdownModule } from "primeng/dropdown";
 import { RippleModule } from "primeng/ripple";
 import { InputTextModule } from "primeng/inputtext";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
-import { CommonModule } from "@angular/common";
+import { CommonModule, DatePipe } from "@angular/common";
 import { CalendarModule } from "primeng/calendar";
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
@@ -45,7 +45,7 @@ import { provideFirestore,getFirestore } from '@angular/fire/firestore';
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideFirestore(() => getFirestore())
   ],
-  providers: [MessageService],
+  providers: [MessageService, DatePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

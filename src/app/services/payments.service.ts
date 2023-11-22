@@ -1,38 +1,35 @@
 import { Injectable } from '@angular/core';
 import {Observable} from "rxjs";
 import {Payment} from "../models/payment.model";
-import { Firestore, collection, addDoc, deleteDoc, doc, collectionData} from '@angular/fire/firestore';
+import { Firestore, collection, addDoc, deleteDoc, doc, collectionData, updateDoc} from '@angular/fire/firestore';
+import { DatePipe } from '@angular/common';
 
-const baseUrl = 'http://localhost:8080/payments';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PaymentsService {
 
-  constructor(private firestore: Firestore) { }
+  constructor(private firestore: Firestore,
+    private datePipe: DatePipe) { }
 
   getAll(): Observable<Payment[]> {
     const paymentRef = collection(this.firestore, 'payments');
-    return collectionData(paymentRef, { idField: 'payment' }) as Observable<Payment[]>;
+    return collectionData(paymentRef, { idField: 'id' }) as Observable<Payment[]>;
   }
 
-  /*getById(id: any): Observable<any>{
-    return this.http.get(baseUrl+'/${id}')
-  }*/
-
-  createNewPayment(payment: Payment) {
+  createNewPayment(payment: Partial<Payment>) {
+    payment.createdDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss')?.toString();
     const paymentRef = collection(this.firestore, 'payments');
     return addDoc(paymentRef, payment);
   }
-
-  /*updatePayment(id: any, payment: Payment): Observable<any>{
-    return this.http.put<Payment>(baseUrl+'/'+id, payment);
-  }*/
-
   deletePayment(id: string) {
-    const paymentRef = doc(this.firestore, `payments/payment`);
+    const paymentRef = doc(this.firestore, `payments/${id}`);
     return deleteDoc(paymentRef);
   }
 
+  updatePayment(id: string) {
+    const paymentRef = doc(this.firestore, `payments/${id}`);
+    return updateDoc(paymentRef, {"status": "Paid", "paidDate": this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss')});
+  }
 }
